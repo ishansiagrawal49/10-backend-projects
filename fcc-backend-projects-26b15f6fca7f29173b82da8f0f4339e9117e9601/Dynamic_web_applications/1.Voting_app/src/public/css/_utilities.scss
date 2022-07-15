@@ -1,0 +1,36 @@
+.row {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+// margins:
+.margin-b-10 {
+    margin-bottom: 10px;
+}
+
+.margin-b-20 {
+    margin-bottom: 20px;
+}
+
+.margin-t-10 {
+    margin-top: 10px;
+}
+
+.margin-t-20 {
+    margin-top: 20px;
+}
+
+.margin-t-40 {
+    margin-top: 40px;
+}
+
+// for label to display error message
+.error-message {
+    color: $color-text-error;
+    font-size: $font-size-p;
+}

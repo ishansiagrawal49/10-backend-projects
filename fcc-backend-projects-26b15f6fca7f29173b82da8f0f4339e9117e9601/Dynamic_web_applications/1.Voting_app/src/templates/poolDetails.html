@@ -1,0 +1,71 @@
+{{define "details"}}
+<!DOCTYPE HTML>
+
+<head>
+    <title>{{.Title}}</title>
+    {{template "styles"}}
+</head>
+
+
+<body>
+    {{template "navbar" .}}
+
+    <div class="main-container">
+
+        <h1>{{.Title}} </h1>
+        <p> Submitted by <a href="/u/{{.Author}}">{{.Author}}</a></p>
+
+        <!-- if logged in user is the same as the author of poll, display
+        editing functionality -->
+        {{if eq .LoggedInUser.Username .Author}}
+        <div class="row poll-managing">
+            <form method="GET" action="/poll/{{.ID}}/edit">
+                <button class="btn-default btn-small" type="submit">Edit</button>
+            </form>
+            <form method="POST">
+                <input type="hidden" name="_method" value="delete">
+                <button class="btn-default btn-small" type="submit">Delete</button>
+            </form>
+        </div>
+        {{end}}
+
+        <!-- -->
+        {{if .LoggedInUser.LoggedIn}}
+        <form class="vertical-options" method="POST">
+            <input type="hidden" name="_method" value="post" />
+            <!-- -->
+            {{range $i, $e := .Options}}
+            <div class="row vote-option">
+                <input id="{{$i}}" type="radio" value="{{index $e 1}}" name="voteOption">
+                <label for="{{$i}}"><span class="radio">{{index $e 0}}</span></label>
+            </div>
+            {{end}}
+
+            <button class="btn-submit" type="submit"> Vote </button>
+            <label class="error-message">{{.Errors.PostVoteError}}</label>
+
+        </form>
+        {{end}}
+
+        <div class="poll-results">
+            <h2> Results </h2>
+            <div class="chart-container margin-t-40">
+                <canvas id="resultsChart"></canvas>
+            </div>
+
+            <div id="chart-data">
+                {{ range $index, $votes := .Votes}}
+                <input type="hidden" value="{{index $votes 0}}" />
+                <input type="hidden" value="{{index $votes 1}}" /> {{end}}
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<!-- adding chart js cdn link -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
+<script src="/public/js/drawChart.js"></script>
+
+</html>
+{{end}}
